@@ -11,9 +11,33 @@ def my_merge(array)
     end
   end
   sequence = [my_merge(halves[0]), my_merge(halves[1])]
-  return sequence.flatten.sort
+
+  #return sequence.flatten.sort
+  return sort_halves(sequence[0], sequence[1])
 end
 
-arr = [6,3,6,2,9]
+def sort_halves(left, right)
+  sorted = []
+  until left.empty? || right.empty?
+    until right.empty?
+      if left[0] >= right[0]
+        sorted << right.shift
+      else
+        sorted << left.shift
+        break
+      end
+    end
+  end
 
-p my_merge(arr)
+  unless left.empty?
+    left.each do |e|
+      sorted << e
+    end
+  end
+  unless right.empty?
+    right.each do |e|
+      sorted << e
+    end
+  end
+  sorted
+end
