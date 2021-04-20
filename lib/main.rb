@@ -1,43 +1,39 @@
-def my_merge(array)
-  return array if array.length == 1
-  halves = []
-  if array.length.even?
-    array.each_slice(array.length/2) do |half|
-      halves << half
+def merge(arr1, arr2)
+  new = []
+  i = 0
+  j = 0
+  while i < arr1.length && j < arr2.length
+    if arr1[i] < arr2[j]
+      new << arr1[i]
+      i += 1
+    else
+      new << arr2[j]
+      j += 1
+    end
+    break if arr1[i].nil? || arr2[j].nil?
+  end
+  if i < arr1.length
+    until i == arr1.length
+      new << arr1[i]
+      i += 1
     end
   else
-    array.each_slice(array.length/2+1) do |half|
-      halves << half
+    until j == arr2.length
+      new << arr2[j]
+      j += 1
     end
   end
-  sequence = [my_merge(halves[0]), my_merge(halves[1])]
-
-  #return sequence.flatten.sort
-  return sort_halves(sequence[0], sequence[1])
+  new
 end
 
-def sort_halves(left, right)
-  sorted = []
-  until left.empty? || right.empty?
-    until right.empty?
-      if left[0] >= right[0]
-        sorted << right.shift
-      else
-        sorted << left.shift
-        break
-      end
-    end
-  end
+def merge_sort(arr)
+  return arr if arr.size == 1
+  mid = arr.length / 2
+  left = arr[0..(mid-1)]
+  right = arr[mid..-1]
 
-  unless left.empty?
-    left.each do |e|
-      sorted << e
-    end
-  end
-  unless right.empty?
-    right.each do |e|
-      sorted << e
-    end
-  end
-  sorted
+  left = merge_sort(left)
+  right = merge_sort(right)
+
+  merge(left, right)
 end
